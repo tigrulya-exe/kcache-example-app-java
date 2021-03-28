@@ -17,6 +17,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Collections;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -66,7 +68,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET, "/articles/**", "/profiles/**", "/tags")
         .permitAll()
         .anyRequest()
-        .authenticated();
+        .authenticated()
+    .and()
+    .headers()
+    .cacheControl()
+    .disable();
 
     http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
   }
@@ -74,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     final CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(asList("*"));
+    configuration.setAllowedOrigins(Collections.singletonList("*"));
     configuration.setAllowedMethods(asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
     // setAllowCredentials(true) is important, otherwise:
     // The value of the 'Access-Control-Allow-Origin' header in the response must not be the
@@ -82,7 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     configuration.setAllowCredentials(false);
     // setAllowedHeaders is important! Without it, OPTIONS preflight request
     // will fail with 403 Invalid CORS request
-    configuration.setAllowedHeaders(asList("Authorization", "Cache-Control", "Content-Type"));
+    configuration.setAllowedHeaders(Collections.singletonList("*"));
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;

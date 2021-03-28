@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.nsu.manasyan.kcache.core.annotations.KCacheable;
 
 import java.util.HashMap;
 
@@ -20,6 +21,7 @@ public class TagsApi {
     }
 
     @GetMapping
+    @KCacheable(tables = "tags")
     public ResponseEntity getTags() {
         return ResponseEntity.ok(new HashMap<String, Object>() {{
             put("tags", tagsQueryService.allTags());

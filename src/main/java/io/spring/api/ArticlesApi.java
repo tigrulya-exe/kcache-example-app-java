@@ -9,6 +9,7 @@ import io.spring.core.user.User;
 import java.util.HashMap;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.nsu.manasyan.kcache.core.annotations.KCacheEvict;
+import ru.nsu.manasyan.kcache.core.annotations.KCacheable;
 
 @RestController
 @RequestMapping(path = "/articles")
@@ -32,6 +35,7 @@ public class ArticlesApi {
   }
 
   @PostMapping
+  @KCacheEvict(tables = "articles")
   public ResponseEntity createArticle(
       @Valid @RequestBody NewArticleParam newArticleParam, @AuthenticationPrincipal User user) {
     Article article = articleCommandService.createArticle(newArticleParam, user);
@@ -52,12 +56,14 @@ public class ArticlesApi {
   }
 
   @GetMapping
+  @KCacheable(tables = "articles")
   public ResponseEntity getArticles(
       @RequestParam(value = "offset", defaultValue = "0") int offset,
       @RequestParam(value = "limit", defaultValue = "20") int limit,
       @RequestParam(value = "tag", required = false) String tag,
       @RequestParam(value = "favorited", required = false) String favoritedBy,
       @RequestParam(value = "author", required = false) String author,
+      RequestEntity<?> requestEntity,
       @AuthenticationPrincipal User user) {
     return ResponseEntity.ok(
         articleQueryService.findRecentArticles(
