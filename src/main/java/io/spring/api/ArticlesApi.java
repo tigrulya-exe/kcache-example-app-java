@@ -55,6 +55,11 @@ public class ArticlesApi {
     return ResponseEntity.ok(articleQueryService.findUserFeed(user, new Page(offset, limit)));
   }
 
+  @GetMapping("/evict")
+  @KCacheEvict(tables = "articles")
+  public void evict() {
+  }
+
   @GetMapping
   @KCacheable(tables = "articles")
   public ResponseEntity getArticles(
