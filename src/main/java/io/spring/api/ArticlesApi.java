@@ -56,12 +56,11 @@ public class ArticlesApi {
   }
 
   @GetMapping("/evict")
-  @KCacheEvict(tables = "articles")
   public void evict() {
+    articleCommandService.evict();
   }
 
   @GetMapping
-  @KCacheable(tables = "articles")
   public ResponseEntity getArticles(
       @RequestParam(value = "offset", defaultValue = "0") int offset,
       @RequestParam(value = "limit", defaultValue = "20") int limit,

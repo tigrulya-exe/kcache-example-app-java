@@ -48,6 +48,10 @@ public class Article {
     this.updatedAt = createdAt;
   }
 
+  public void update() {
+    this.updatedAt = new DateTime();
+  }
+
   public void update(String title, String description, String body) {
     if (!Util.isEmpty(title)) {
       this.title = title;
