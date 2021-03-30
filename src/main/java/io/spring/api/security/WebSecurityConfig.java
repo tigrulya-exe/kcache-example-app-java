@@ -76,7 +76,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     .disable();
 
     http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    http.antMatcher("/articles**").addFilterBefore(new ShallowEtagHeaderFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 
   @Bean
