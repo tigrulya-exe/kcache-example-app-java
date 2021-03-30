@@ -35,8 +35,6 @@ dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.34.0'
     implementation 'org.postgresql:postgresql:42.2.14'
 
-    implementation 'com.github.tigrulya-exe:kcache:0.2.1'
-
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 

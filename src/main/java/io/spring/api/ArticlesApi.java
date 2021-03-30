@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.nsu.manasyan.kcache.core.annotations.KCacheEvict;
-import ru.nsu.manasyan.kcache.core.annotations.KCacheable;
 
 @RestController
 @RequestMapping(path = "/articles")
@@ -35,7 +33,6 @@ public class ArticlesApi {
   }
 
   @PostMapping
-  @KCacheEvict(tables = "articles")
   public ResponseEntity createArticle(
       @Valid @RequestBody NewArticleParam newArticleParam, @AuthenticationPrincipal User user) {
     Article article = articleCommandService.createArticle(newArticleParam, user);
